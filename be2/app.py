@@ -1,7 +1,15 @@
 from flask import Flask
+import requests
 # Backend service 2
 app = Flask(__name__)
 
+
 @app.route("/")
 def hello_world():
-    return "<p>You are at backend service 2</p>"
+    url = "https://raw.githubusercontent.com/cba-lunky/test-txt/main/test.txt"
+    page = requests.get(url)
+
+    if req.status_code == requests.codes.ok:
+        return(page.text)
+    else:
+        return "uh oh spaghettios"
