@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mad-life-dogs
+  labels:
+    app: mld
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mld
+  template:
+    metadata:
+      labels:
+        app: mld
+    spec:
+      containers:
+      - name: base
+        image: cbadebeysja/flask-service-getto:python-docker
+        ports:
+        - containerPort: 5000
+        imagePullPolicy: Always
+      - name: be1
+        image: cbadebeysja/flask-service-getto:python-docker-be1
+        ports:
+        - containerPort: 5001
+        imagePullPolicy: Always
+      - name: be2
+        image: cbadebeysja/flask-service-getto:python-docker-be2
+        ports:
+        - containerPort: 5002
+        imagePullPolicy: Always
