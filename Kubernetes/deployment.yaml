@@ -1,0 +1,82 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: mld-pub-service
+spec:
+  type: NodePort
+  selector:
+    app: mld-pub
+  ports:
+    - protocol: TCP
+      nodePort: 30000
+      port: 5000 
+      targetPort: 5000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mld-service
+spec:
+  clusterIP: 10.43.10.10
+  selector:
+    app: mld
+  ports:
+    - name: be2
+      protocol: TCP
+      port: 5002
+      targetPort: 5002
+    - name: be1
+      protocol: TCP
+      port: 5001
+      targetPort: 5001
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mad-life-dogs-pub
+  labels:
+    app: mld-pub
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mld-pub
+  template:
+    metadata:
+      labels:
+        app: mld-pub
+    spec:
+      containers:
+      - name: base
+        image: cbadebeysja/flask-service-getto:base
+        ports:
+        - containerPort: 5000
+        imagePullPolicy: Always
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mad-life-dogs
+  labels:
+    app: mld
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mld
+  template:
+    metadata:
+      labels:
+        app: mld
+    spec:
+      containers:
+      - name: be1
+        image: cbadebeysja/flask-service-getto:be1
+        ports:
+        - containerPort: 5001
+        imagePullPolicy: Always
+      - name: be2
+        image: cbadebeysja/flask-service-getto:be2
+        ports:
+        - containerPort: 5002
+        imagePullPolicy: Always
