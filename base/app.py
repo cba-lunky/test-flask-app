@@ -13,10 +13,10 @@ def hello_bob():
 
 @app.route("/backend1")
 def be1():
-    r = requests.get("http://127.0.0.1:5001/")
+    r = requests.get("http://10.43.10.10:5001/")
     return r.text, 200
 
 @app.route("/backend2")
 def be2():
-    r = requests.get("http://127.0.0.1:5002/")
+    r = requests.get("http://10.43.10.10:5002/")
     return r.text, 200
